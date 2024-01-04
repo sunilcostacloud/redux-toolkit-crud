@@ -1,73 +1,97 @@
 const employees = require("../models/employeesSchema");
 
-// getEmployeesTable
-exports.getEmployeesTable = async (req, res) => {
-  const search = req.query.search || "";
-  const gender = req.query.gender || "";
-  const status = req.query.status || "";
-  const sort = req.query.sort || "";
-  const page = req.query.page || 1;
-  const ITEM_PER_PAGE = 2;
+const ITEM_PER_PAGE = 2;
 
-  const query = {
-    fname: { $regex: search, $options: "i" },
-  };
+const handleSuccess = (res, data) => {
+  res.status(200).json({ success: true, data });
+};
 
-  if (gender !== "all") {
-    query.gender = gender;
-  }
+const handleValidationError = (res, message) => {
+  res.status(400).json({ success: false, error: message });
+};
 
-  if (status !== "all") {
-    query.status = status;
-  }
+const handleNotFound = (res, message) => {
+  res.status(404).json({ success: false, error: message });
+};
 
+const handleServerError = (res, message = "Internal server error") => {
+  res.status(500).json({ success: false, error: message });
+};
+
+const getEmployeesTable = async (req, res) => {
   try {
-    const skip = (page - 1) * ITEM_PER_PAGE; // 1 * 4 = 4
+    const {
+      search = "",
+      gender = "",
+      status = "",
+      sort = "",
+      page = 1,
+    } = req.query;
 
+    const query = {
+      $or: [
+        { fname: { $regex: search, $options: "i" } },
+        { lname: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { mobile: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+      ],
+    };
+
+    if (gender !== "all") {
+      query.gender = gender;
+    }
+
+    if (status !== "all") {
+      query.status = status;
+    }
+
+    const skip = (page - 1) * ITEM_PER_PAGE;
     const count = await employees.countDocuments(query);
-
     const employeesTableData = await employees
       .find(query)
-      .sort({ datecreated: sort == "new" ? -1 : 1 })
+      .sort({ datecreated: sort === "new" ? -1 : 1 })
       .limit(ITEM_PER_PAGE)
       .skip(skip);
 
-    const pageCount = Math.ceil(count / ITEM_PER_PAGE); // 8 /4 = 2
+    const pageCount = Math.ceil(count / ITEM_PER_PAGE);
 
-    res.status(200).json({
-      Pagination: {
+    handleSuccess(res, {
+      pagination: {
         count,
         pageCount,
       },
       employeesTableData,
     });
   } catch (error) {
-    res.status(401).json(error);
+    handleServerError(res);
   }
 };
 
-// addNewEmployee
-exports.addNewEmployee = async (req, res) => {
-  const { fname, lname, email, mobile, gender, location, status } = req.body;
-  if (
-    !fname ||
-    !lname ||
-    !email ||
-    !mobile ||
-    !gender ||
-    !location ||
-    !status
-  ) {
-    res.status(401).json({ error: "All Inputs is required" });
-  }
+const addNewEmployee = async (req, res) => {
   try {
-    const preuser = await employees.findOne({ email: email });
+    const { fname, lname, email, mobile, gender, location, status } = req.body;
+
+    // Add validation for required fields
+    if (
+      !fname ||
+      !lname ||
+      !email ||
+      !mobile ||
+      !gender ||
+      !location ||
+      !status
+    ) {
+      handleValidationError(res, "All inputs are required");
+      return;
+    }
+
+    const preuser = await employees.findOne({ email });
 
     if (preuser) {
-      res.status(401).json("This user already exist in our databse");
+      handleValidationError(res, "This user already exists in our database");
     } else {
       const datecreated = new Date();
-
       const employeeData = new employees({
         fname,
         lname,
@@ -78,33 +102,37 @@ exports.addNewEmployee = async (req, res) => {
         status,
         datecreated,
       });
+
       await employeeData.save();
-      res.status(201).json(employeeData);
+      handleSuccess(res, employeeData);
     }
   } catch (error) {
-    res.status(401).json({ error: "cannot able to add employee" });
+    handleServerError(res);
   }
 };
 
-// getSingleEmployeeDetails
-exports.getSingleEmployeeDetails = async (req, res) => {
-  const { id } = req.params;
+const getSingleEmployeeDetails = async (req, res) => {
   try {
-    const employeesdata = await employees.findOne({ _id: id });
-    res.status(200).json(employeesdata);
+    const { id } = req.params;
+    const employeeData = await employees.findOne({ _id: id });
+
+    if (employeeData) {
+      handleSuccess(res, employeeData);
+    } else {
+      handleNotFound(res, "User not found");
+    }
   } catch (error) {
-    res.status(401).json({ error: "user not found" });
+    handleServerError(res);
   }
 };
 
-// updateEmployeeDetails
-exports.updateEmployeeDetails = async (req, res) => {
-  const { id } = req.params;
-  const { fname, lname, email, mobile, gender, location, status } = req.body;
-
-  const dateUpdated = new Date();
-
+const updateEmployeeDetails = async (req, res) => {
   try {
+    const { id } = req.params;
+    const { fname, lname, email, mobile, gender, location, status } = req.body;
+
+    const dateUpdated = new Date();
+
     const updateEmployee = await employees.findByIdAndUpdate(
       { _id: id },
       {
@@ -122,20 +150,35 @@ exports.updateEmployeeDetails = async (req, res) => {
       }
     );
 
-    await updateEmployee.save();
-    res.status(200).json(updateEmployee);
+    if (updateEmployee) {
+      handleSuccess(res, updateEmployee);
+    } else {
+      handleNotFound(res, "User not found");
+    }
   } catch (error) {
-    res.status(401).json({ error: "cannot able to update employee" });
+    handleServerError(res);
   }
 };
 
-// deleteEmployee
-exports.deleteEmployee = async (req, res) => {
-  const { id } = req.params;
+const deleteEmployee = async (req, res) => {
   try {
+    const { id } = req.params;
     const deleteEmployee = await employees.findByIdAndDelete({ _id: id });
-    res.status(200).json(deleteEmployee);
+
+    if (deleteEmployee) {
+      handleSuccess(res, deleteEmployee);
+    } else {
+      handleNotFound(res, "User not found");
+    }
   } catch (error) {
-    res.status(401).json({ error: "cannot able to delete employee" });
+    handleServerError(res);
   }
+};
+
+module.exports = {
+  getEmployeesTable,
+  addNewEmployee,
+  getSingleEmployeeDetails,
+  updateEmployeeDetails,
+  deleteEmployee,
 };
