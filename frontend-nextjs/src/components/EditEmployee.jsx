@@ -97,8 +97,6 @@ const EditEmployee = (props) => {
     dispatch(editEmployeeTableData(payload));
   };
 
-  console.log("employeeProfileData", employeeProfileData);
-
   useEffect(() => {
     if (
       employeeProfileData?.data &&
