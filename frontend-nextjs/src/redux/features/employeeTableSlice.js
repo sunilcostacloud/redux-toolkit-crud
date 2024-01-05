@@ -133,13 +133,6 @@ export const employeeTableSlice = createSlice({
   name: "employeeTable",
   initialState,
   reducers: {
-    resetEmployeeProfile(state, action) {
-      state.employeeProfileData = {};
-      state.employeeProfileIsLoading = false;
-      state.employeeProfileIsError = false;
-      state.employeeProfileError = "";
-      state.employeeProfileIsSuccess = false;
-    },
     resetAddEmployee(state, action) {
       state.employeeAddDataLoading = false;
       state.employeeAddedDataIsError = false;

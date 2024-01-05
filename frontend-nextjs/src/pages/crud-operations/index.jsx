@@ -454,6 +454,7 @@ const CrudOperations = () => {
         editEmployeeopen={editEmployeeopen}
         setEditEmployeeOpen={setEditEmployeeOpen}
         tableRowId={tableRowId}
+        page={page}
       />
 
       {/* delete employee dialog */}
