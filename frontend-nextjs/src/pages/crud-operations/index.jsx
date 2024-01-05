@@ -28,6 +28,7 @@ import {
 } from "@/redux/features/employeeTableSlice";
 import DeleteEmployee from "@/components/DeleteEmployee";
 import AddEmployee from "@/components/AddEmployee";
+import EditEmployee from "@/components/EditEmployee";
 
 const columns = [
   {
@@ -446,6 +447,13 @@ const CrudOperations = () => {
       <AddEmployee
         addEmployeeOpen={addEmployeeOpen}
         setAddEmployeeOpen={setAddEmployeeOpen}
+      />
+
+      {/* edit employee dialog */}
+      <EditEmployee
+        editEmployeeopen={editEmployeeopen}
+        setEditEmployeeOpen={setEditEmployeeOpen}
+        tableRowId={tableRowId}
       />
 
       {/* delete employee dialog */}

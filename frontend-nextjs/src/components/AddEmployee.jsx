@@ -23,16 +23,8 @@ const AddEmployee = (props) => {
   const { addEmployeeOpen, setAddEmployeeOpen } = props;
   const dispatch = useDispatch();
 
-  const data = useSelector((state) => state.employees.employeeAddedData);
   const isLoading = useSelector(
     (state) => state.employees.employeeAddDataLoading
-  );
-  const isError = useSelector(
-    (state) => state.employees.employeeAddedDataIsError
-  );
-  const error = useSelector((state) => state.employees.employeeAddedDataError);
-  const isSuccess = useSelector(
-    (state) => state.employees.employeeAddedDataIsSuccess
   );
 
   const [inputdata, setInputData] = useState({
