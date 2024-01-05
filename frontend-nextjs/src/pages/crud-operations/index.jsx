@@ -26,6 +26,7 @@ import {
   getEmployeeProfileData,
   getEmployeeTableData,
 } from "@/redux/features/employeeTableSlice";
+import DeleteEmployee from "@/components/DeleteEmployee";
 
 const columns = [
   {
@@ -436,6 +437,12 @@ const CrudOperations = () => {
       ) : (
         ""
       )}
+      <DeleteEmployee
+        deleteEmployeeOpen={deleteEmployeeOpen}
+        setDeleteEmployeeOpen={setDeleteEmployeeOpen}
+        tableRowId={tableRowId}
+        page={page}
+      />
     </div>
   );
 };
