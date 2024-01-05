@@ -240,9 +240,8 @@ export const employeeTableSlice = createSlice({
         state.employeeAddedDataIsSuccess = true;
 
         // console.log("Inside fulfilled payload", action.meta.arg)
-        const { handleAddEmployeeClose, setCurrentPage } = action.meta.arg;
+        const { handleAddEmployeeClose } = action.meta.arg;
         handleAddEmployeeClose();
-        setCurrentPage(1);
 
         toast("User Added Successully", { autoClose: 2000, type: "success" });
         employeeTableSlice.caseReducers.resetAddEmployee(state, action);

@@ -27,6 +27,7 @@ import {
   getEmployeeTableData,
 } from "@/redux/features/employeeTableSlice";
 import DeleteEmployee from "@/components/DeleteEmployee";
+import AddEmployee from "@/components/AddEmployee";
 
 const columns = [
   {
@@ -265,7 +266,10 @@ const CrudOperations = () => {
 
         <div>
           <FormControl variant="outlined">
-            <InputLabel id="demo-simple-select-outlined-label">Sort</InputLabel>
+            <InputLabel id="demo-simple-select-outlined-label">
+              {" "}
+              Sort{" "}
+            </InputLabel>
             <Select
               labelId="demo-simple-select-outlined-label"
               id="demo-simple-select-outlined"
@@ -437,6 +441,14 @@ const CrudOperations = () => {
       ) : (
         ""
       )}
+
+      {/* add employee dialog */}
+      <AddEmployee
+        addEmployeeOpen={addEmployeeOpen}
+        setAddEmployeeOpen={setAddEmployeeOpen}
+      />
+
+      {/* delete employee dialog */}
       <DeleteEmployee
         deleteEmployeeOpen={deleteEmployeeOpen}
         setDeleteEmployeeOpen={setDeleteEmployeeOpen}
