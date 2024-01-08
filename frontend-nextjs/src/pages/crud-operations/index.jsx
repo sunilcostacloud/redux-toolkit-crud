@@ -139,6 +139,14 @@ const CrudOperations = () => {
   };
 
   const handleViewClick = (e, id) => {
+    if (
+      search.length == 0 &&
+      gender == "all" &&
+      status == "all" &&
+      sort == "new"
+    ) {
+      sessionStorage.setItem("currentPage", page);
+    }
     router.push(`/crud-operations/${id}`);
   };
 
@@ -185,7 +193,13 @@ const CrudOperations = () => {
   };
 
   useEffect(() => {
-    getData({ search, gender, status, sort, page });
+    const storedPage = sessionStorage.getItem("currentPage") || page;
+
+    // Convert the retrieved value to a number and set it in the state
+    setPage(Number(storedPage));
+
+    // Fetch data based on the retrieved page value
+    getData({ search, gender, status, sort, page: storedPage });
   }, [dispatch]);
 
   return (

@@ -171,6 +171,8 @@ export const employeeTableSlice = createSlice({
         state.error = "";
         state.isSuccess = true;
 
+        sessionStorage.removeItem("currentPage");
+
         // console.log("Inside fulfilled payload", action.meta.arg)
       })
       .addCase(getEmployeeTableData.rejected, (state, action) => {
