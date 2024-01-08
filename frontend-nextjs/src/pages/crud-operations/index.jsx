@@ -106,9 +106,8 @@ const CrudOperations = () => {
   const [gender, setGender] = useState("all");
   const [status, setStatus] = useState("all");
   const [sort, setSort] = useState("new");
-  const getPageNumberFromSessionStorage =
-    typeof window !== "undefined" ? Number(sessionStorage.getItem("page")) : 1;
-  const [page, setPage] = useState(getPageNumberFromSessionStorage);
+
+  const [page, setPage] = useState(1);
 
   const [addEmployeeOpen, setAddEmployeeOpen] = useState(false);
   const [editEmployeeopen, setEditEmployeeOpen] = useState(false);
@@ -127,7 +126,6 @@ const CrudOperations = () => {
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
-    sessionStorage.setItem("page", newPage);
     getData({ search, gender, status, sort, page: newPage });
   };
 
@@ -191,17 +189,7 @@ const CrudOperations = () => {
 
   useEffect(() => {
     getData({ search, gender, status, sort, page });
-
-    if (!getPageNumberFromSessionStorage) {
-      sessionStorage.setItem("page", page);
-    }
   }, [dispatch]);
-
-  useEffect(() => {
-    if (getPageNumberFromSessionStorage) {
-      setPage(Number(sessionStorage.getItem("page")));
-    }
-  }, [getPageNumberFromSessionStorage]);
 
   console.log("page", page);
 
