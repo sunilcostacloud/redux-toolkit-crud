@@ -102,23 +102,20 @@ const CrudOperations = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const { data, isLoading, isError, error, isSuccess } = useSelector(
+    (state) => state.employees
+  );
+
   const [search, setSearch] = useState("");
   const [gender, setGender] = useState("all");
   const [status, setStatus] = useState("all");
   const [sort, setSort] = useState("new");
-
   const [page, setPage] = useState(1);
 
   const [addEmployeeOpen, setAddEmployeeOpen] = useState(false);
   const [editEmployeeopen, setEditEmployeeOpen] = useState(false);
   const [deleteEmployeeOpen, setDeleteEmployeeOpen] = useState(false);
   const [tableRowId, setTableRowId] = useState("");
-
-  const data = useSelector((state) => state.employees.data);
-  const isLoading = useSelector((state) => state.employees.isLoading);
-  const isError = useSelector((state) => state.employees.isError);
-  const error = useSelector((state) => state.employees.error);
-  const isSuccess = useSelector((state) => state.employees.isSuccess);
 
   const getData = ({ search, gender, status, sort, page }) => {
     dispatch(getEmployeeTableData({ search, gender, status, sort, page }));
@@ -190,8 +187,6 @@ const CrudOperations = () => {
   useEffect(() => {
     getData({ search, gender, status, sort, page });
   }, [dispatch]);
-
-  console.log("page", page);
 
   return (
     <div>
@@ -459,14 +454,23 @@ const CrudOperations = () => {
         tableRowId={tableRowId}
         page={page}
       />
-
+      {console.log("dataLength", page, data?.data?.employeesTableData?.length)}
       {/* delete employee dialog */}
-      <DeleteEmployee
-        deleteEmployeeOpen={deleteEmployeeOpen}
-        setDeleteEmployeeOpen={setDeleteEmployeeOpen}
-        tableRowId={tableRowId}
-        page={page}
-      />
+      {data?.data?.employeesTableData?.length !== "undefined" && (
+        <DeleteEmployee
+          deleteEmployeeOpen={deleteEmployeeOpen}
+          setDeleteEmployeeOpen={setDeleteEmployeeOpen}
+          tableRowId={tableRowId}
+          page={
+            page == 1
+              ? 1
+              : data?.data?.employeesTableData?.length > 1
+              ? page
+              : page - 1
+          }
+          setPage={setPage}
+        />
+      )}
     </div>
   );
 };

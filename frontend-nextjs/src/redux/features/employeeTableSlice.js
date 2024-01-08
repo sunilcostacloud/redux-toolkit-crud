@@ -310,8 +310,9 @@ export const employeeTableSlice = createSlice({
         state.employeeDeleteDataIsSuccess = true;
 
         // console.log("Inside fulfilled payload", action.meta.arg)
-        const { handleDeleteEmployeeClose } = action.meta.arg;
+        const { handleDeleteEmployeeClose, setPage, page } = action.meta.arg;
         handleDeleteEmployeeClose();
+        setPage(page);
 
         toast("User Deleted Successully", {
           autoClose: 2000,

@@ -12,7 +12,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const DeleteEmployee = (props) => {
-  const { deleteEmployeeOpen, setDeleteEmployeeOpen, tableRowId, page } = props;
+  const {
+    deleteEmployeeOpen,
+    setDeleteEmployeeOpen,
+    tableRowId,
+    page,
+    setPage,
+  } = props;
 
   const dispatch = useDispatch();
 
@@ -37,6 +43,8 @@ const DeleteEmployee = (props) => {
       tableRowId,
       handleDeleteEmployeeClose,
       employeeData,
+      setPage,
+      page,
     };
 
     dispatch(deleteEmployeeTableData(payload));
