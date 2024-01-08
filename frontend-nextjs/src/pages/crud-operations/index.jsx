@@ -454,8 +454,9 @@ const CrudOperations = () => {
         tableRowId={tableRowId}
         page={page}
       />
-      {console.log("dataLength", page, data?.data?.employeesTableData?.length)}
+
       {/* delete employee dialog */}
+
       {data?.data?.employeesTableData?.length !== "undefined" && (
         <DeleteEmployee
           deleteEmployeeOpen={deleteEmployeeOpen}
