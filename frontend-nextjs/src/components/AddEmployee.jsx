@@ -20,7 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const AddEmployee = (props) => {
-  const { addEmployeeOpen, setAddEmployeeOpen } = props;
+  const { addEmployeeOpen, setAddEmployeeOpen, setPage } = props;
   const dispatch = useDispatch();
 
   const isLoading = useSelector(
@@ -74,6 +74,7 @@ const AddEmployee = (props) => {
       data: inputdata,
       handleAddEmployeeClose,
       employeeData,
+      setPage,
     };
 
     dispatch(addEmployeeTableData(payload));

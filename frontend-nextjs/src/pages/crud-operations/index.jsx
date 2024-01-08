@@ -459,6 +459,7 @@ const CrudOperations = () => {
       <AddEmployee
         addEmployeeOpen={addEmployeeOpen}
         setAddEmployeeOpen={setAddEmployeeOpen}
+        setPage={setPage}
       />
 
       {/* edit employee dialog */}
