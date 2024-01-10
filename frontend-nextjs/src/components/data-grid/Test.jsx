@@ -15,7 +15,11 @@ import { DataGrid } from "@mui/x-data-grid";
 const Test = () => {
   const [hoverdRowId, setHoveredId] = useState(null);
   const [hoveredRowDetails, setHoveredRowDetails] = useState({});
-  const handleRowClick = (e, id) => {
+  const handleViewClick = (e, id) => {
+    console.log("checkRowId", id);
+  };
+
+  const handleDeleteClick = (e, id) => {
     console.log("checkRowId", id);
   };
 
@@ -64,7 +68,7 @@ const Test = () => {
               <Tooltip title="View">
                 <IconButton
                   onClick={() => {
-                    handleRowClick(event, row.id);
+                    handleViewClick(event, row.id);
                   }}
                 >
                   <VisibilityIcon
@@ -78,7 +82,7 @@ const Test = () => {
               <Tooltip title="Delete">
                 <IconButton
                   onClick={() => {
-                    handleRowClick(event, row.id);
+                    handleDeleteClick(event, row.id);
                   }}
                 >
                   <DeleteForeverIcon

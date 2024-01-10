@@ -13,8 +13,6 @@ import { useEffect } from "react";
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
-  console.log("checkrouter", router.query, router.pathname);
-
   useEffect(() => {
     if (router.pathname != "/crud-operations") {
       sessionStorage.removeItem("search");
