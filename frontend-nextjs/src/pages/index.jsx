@@ -59,7 +59,7 @@ const HomePage = () => {
       <button onClick={() => router.push("/crud-operations")}>
         Crud Operations
       </button>
-
+      <button onClick={() => router.push("/data-grid")}>Data Grid</button>
       <div>
         <h1>Direct Api Call</h1>
         <div>
