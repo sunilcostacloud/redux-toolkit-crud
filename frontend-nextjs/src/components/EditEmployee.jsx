@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const EditEmployee = (props) => {
-  const { editEmployeeopen, setEditEmployeeOpen, tableRowId, page } = props;
+  const { editEmployeeopen, setEditEmployeeOpen, tableRowId } = props;
   const dispatch = useDispatch();
 
   const isLoading = useSelector(
@@ -80,11 +80,11 @@ const EditEmployee = (props) => {
     // console.log("inputData", inputdata)
 
     const employeeData = {
-      search: "",
-      gender: "all",
-      status: "all",
-      sort: "new",
-      page,
+      search: sessionStorage.getItem("search"),
+      gender: sessionStorage.getItem("gender"),
+      status: sessionStorage.getItem("status"),
+      sort: sessionStorage.getItem("sort"),
+      page: sessionStorage.getItem("page"),
     };
 
     const payload = {
