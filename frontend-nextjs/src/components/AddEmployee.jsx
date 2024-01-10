@@ -63,10 +63,10 @@ const AddEmployee = (props) => {
     // console.log("inputData", inputdata)
 
     const employeeData = {
-      search: "",
-      gender: "all",
-      status: "all",
-      sort: "new",
+      search: sessionStorage.getItem("search"),
+      gender: sessionStorage.getItem("gender"),
+      status: sessionStorage.getItem("status"),
+      sort: sessionStorage.getItem("sort"),
       page: 1,
     };
 
