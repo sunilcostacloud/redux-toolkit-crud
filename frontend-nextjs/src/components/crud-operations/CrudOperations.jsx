@@ -26,9 +26,9 @@ import {
   getEmployeeProfileData,
   getEmployeeTableData,
 } from "@/redux/features/employeeTableSlice";
-import DeleteEmployee from "@/components/DeleteEmployee";
-import AddEmployee from "@/components/AddEmployee";
-import EditEmployee from "@/components/EditEmployee";
+import DeleteEmployee from "./DeleteEmployee";
+import AddEmployee from "./AddEmployee";
+import EditEmployee from "./EditEmployee";
 
 const columns = [
   {

@@ -3,7 +3,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 
 const CrudOperations = dynamic(
-  () => import("../../components/CrudOperations"),
+  () => import("../../components/crud-operations/CrudOperations"),
   {
     ssr: false,
     loading: () => (
