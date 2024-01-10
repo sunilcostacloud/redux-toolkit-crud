@@ -37,7 +37,7 @@ const Test = () => {
       flex: 0.1,
       minWidth: 105,
       field: "userid",
-      headerName: "CRIMINAL ID",
+      headerName: "USER ID",
       renderCell: ({ row }) => (
         <Typography sx={{ color: "text.secondary" }}>{row.userid}</Typography>
       ),
