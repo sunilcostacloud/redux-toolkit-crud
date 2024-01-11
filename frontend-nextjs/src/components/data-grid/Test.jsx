@@ -156,27 +156,11 @@ const Test = () => {
     },
   ]);
 
-  const [value, setValue] = useState("");
-
-  const handleFilter = (val) => {
-    setValue(val);
-  };
-
   const [checkedRowsDetails, setCheckedRowDetails] = useState([]);
 
   const [singleRowDetails, setSingleRowDetails] = useState({});
 
   console.log("check info", checkedRowsDetails, singleRowDetails);
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <div>

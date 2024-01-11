@@ -1,6 +1,20 @@
-import DataGridTable from "@/components/data-grid/DataGridTable";
 import Test from "@/components/data-grid/Test";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
+
+const DataGridTable = dynamic(
+  () => import("../../components/data-grid/DataGridTable"),
+  {
+    ssr: false,
+    loading: () => (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    ),
+  }
+);
 
 const Index = () => {
   const router = useRouter();
@@ -9,7 +23,6 @@ const Index = () => {
       <button onClick={() => router.push("/")}>Home</button>
       <h1>Data Grid</h1>
       <DataGridTable />
-      {/* <Test /> */}
     </div>
   );
 };

@@ -20,6 +20,12 @@ export default function App({ Component, pageProps }) {
       sessionStorage.removeItem("status");
       sessionStorage.removeItem("gender");
       sessionStorage.removeItem("page");
+    } else if (router.pathname != "/data-grid") {
+      sessionStorage.removeItem("search");
+      sessionStorage.removeItem("sort");
+      sessionStorage.removeItem("status");
+      sessionStorage.removeItem("gender");
+      sessionStorage.removeItem("page");
     }
   }, [router.pathname]);
 
