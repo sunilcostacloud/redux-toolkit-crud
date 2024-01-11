@@ -37,17 +37,21 @@ const DataGridTable = () => {
   const [hoverdRowId, setHoveredId] = useState(null);
   const [hoveredRowDetails, setHoveredRowDetails] = useState({});
 
+  // console.log("hoverdRowId", hoverdRowId, hoveredRowDetails);
+
   const { data, isLoading, isError, error, isSuccess } = useSelector(
     (state) => state.employees
   );
 
   // console.log("data?.data?.employeesTableData", data);
 
+  const rows = data?.data?.employeesTableData || [];
+
   const [checkedRowsDetails, setCheckedRowDetails] = useState([]);
 
   const [singleRowDetails, setSingleRowDetails] = useState({});
 
-  // console.log("check info", checkedRowsDetails, singleRowDetails);
+  console.log("check info", checkedRowsDetails, singleRowDetails);
 
   const [search, setSearch] = useState(sessionStorage.getItem("search") || "");
   const [gender, setGender] = useState(
@@ -259,7 +263,7 @@ const DataGridTable = () => {
     },
     {
       flex: 0.1,
-      minWidth: 150,
+      minWidth: 200,
       field: "datecreated",
       headerName: "Date",
       renderCell: ({ row }) => (
@@ -272,14 +276,20 @@ const DataGridTable = () => {
     },
     {
       flex: 0.1,
-      minWidth: 100,
+      minWidth: 200,
       sortable: false,
       field: "actions",
       headerName: "Actions",
       renderCell: ({ row }) => (
         <>
           {hoverdRowId !== null && hoverdRowId == row._id && (
-            <div style={{ display: "flex", gap: "10px", padding: "5px" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                padding: "5px",
+              }}
+            >
               <Tooltip title="View">
                 <IconButton
                   onClick={() => {
@@ -328,8 +338,6 @@ const DataGridTable = () => {
     },
   ];
 
-  const rows = data?.data?.employeesTableData || [];
-
   return (
     <>
       <div>
@@ -349,19 +357,21 @@ const DataGridTable = () => {
           }}
           getRowId={(row) => row._id}
           onRowClick={(params) => {
-            console.log("Clicked Row Data:", params);
+            // console.log("Clicked Row Data:", params);
             setSingleRowDetails(params);
           }}
           componentsProps={{
             row: {
               onMouseEnter: (event) => {
                 const id = event.currentTarget.dataset.id;
-                // console.log("hoveredRow", data?.data?.employeesTableData);
-                const hoveredRow = data?.data?.employeesTableData.find(
-                  (row) => row._id === Number(id)
+                const hoveredRow = data?.data?.employeesTableData?.find(
+                  (row) => row._id == id
                 );
 
+                //   console.log("hoveredRow", hoveredRow);
+
                 // console.log(`Hovering over row with ID: ${id}`);
+
                 setHoveredId(id);
                 setHoveredRowDetails(hoveredRow);
               },
