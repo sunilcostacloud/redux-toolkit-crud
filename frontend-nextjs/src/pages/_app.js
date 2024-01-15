@@ -14,13 +14,13 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.pathname != "/crud-operations") {
+    if (router.pathname.split("/")[1] != "crud-operations") {
       sessionStorage.removeItem("search");
       sessionStorage.removeItem("sort");
       sessionStorage.removeItem("status");
       sessionStorage.removeItem("gender");
       sessionStorage.removeItem("page");
-    } else if (router.pathname != "/data-grid") {
+    } else if (router.pathname.split("/")[1] != "data-grid") {
       sessionStorage.removeItem("search");
       sessionStorage.removeItem("sort");
       sessionStorage.removeItem("status");
