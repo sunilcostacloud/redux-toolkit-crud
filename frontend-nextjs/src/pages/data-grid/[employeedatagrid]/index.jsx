@@ -11,7 +11,7 @@ import { getEmployeeProfileData } from "@/redux/features/employeeTableSlice";
 const EmployeesProfileDataGrid = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const id = router.query.employee;
+  const id = router.query.employeedatagrid;
 
   const data = useSelector((state) => state.employees.employeeProfileData);
   const isLoading = useSelector(
@@ -52,7 +52,7 @@ const EmployeesProfileDataGrid = () => {
                       size="large"
                       variant="contained"
                       color="primary"
-                      onClick={() => router.push("/crud-operations")}
+                      onClick={() => router.push("/data-grid")}
                     >
                       Back
                     </Button>
