@@ -26,9 +26,9 @@ import InputLabel from "@mui/material/InputLabel";
 import Pagination from "@mui/material/Pagination";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import DeleteEmployee from "../crud-operations/DeleteEmployee";
-import AddEmployee from "../crud-operations/AddEmployee";
-import EditEmployee from "../crud-operations/EditEmployee";
+import AddEmployeeDataGrid from "./AddEmployeeDataGrid";
+import EditEmployeeDataGrid from "./EditEmployeeDataGrid";
+import DeleteEmployeeDataGrid from "./DeleteEmployeeDataGrid";
 
 const DataGridTable = () => {
   const router = useRouter();
@@ -347,53 +347,241 @@ const DataGridTable = () => {
 
   return (
     <>
-      <div>
-        <DataGrid
-          autoHeight
-          rows={rows}
-          rowHeight={62}
-          columns={columns}
-          checkboxSelection
-          disableRowSelectionOnClick
-          onRowSelectionModelChange={(newRowSelectionModel) => {
-            //  console.log("newRowSelectionModel", newRowSelectionModel);
-            const receivedData = data?.data?.employeesTableData;
-            const res = receivedData.filter((item) =>
-              newRowSelectionModel.includes(item._id)
-            );
-            // console.log("checkRes", res);
-            setCheckedRowDetails(res);
+      <div
+        style={{
+          width: "95%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: "auto",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          getRowId={(row) => row._id}
-          onRowClick={(params) => {
-            // console.log("Clicked Row Data:", params);
-            setSingleRowDetails(params);
-          }}
-          componentsProps={{
-            row: {
-              onMouseEnter: (event) => {
-                const id = event.currentTarget.dataset.id;
-                const hoveredRow = data?.data?.employeesTableData?.find(
-                  (row) => row._id == id
-                );
+        >
+          <TextField
+            id="standard-basic"
+            label="Search"
+            variant="standard"
+            type="search"
+            value={search}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          <Button variant="contained" onClick={() => requestSearch()}>
+            Search
+          </Button>
+        </div>
+        {/* {console.log("gennder", gender)} */}
+        <div>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Gender</FormLabel>
+            <RadioGroup
+              aria-label="gender"
+              name="gender1"
+              value={gender}
+              onChange={handleGenderChange}
+              row
+            >
+              <FormControlLabel value="all" control={<Radio />} label="All" />
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label="Female"
+              />
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+            </RadioGroup>
+          </FormControl>
+        </div>
 
-                //   console.log("hoveredRow", hoveredRow);
+        <div>
+          <FormControl variant="outlined">
+            <InputLabel id="demo-simple-select-outlined-label">
+              Status
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={status}
+              onChange={handleStatusChange}
+              label="Status"
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="active">active</MenuItem>
+              <MenuItem value="inactive">inactive</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
 
-                // console.log(`Hovering over row with ID: ${id}`);
+        <div>
+          <FormControl variant="outlined">
+            <InputLabel id="demo-simple-select-outlined-label">
+              {" "}
+              Sort{" "}
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={sort}
+              onChange={handleSortChange}
+              label="Sort"
+            >
+              <MenuItem value="new">new</MenuItem>
+              <MenuItem value="old">old</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
 
-                setHoveredId(id);
-                setHoveredRowDetails(hoveredRow);
-              },
-              onMouseLeave: (event) => {
-                // Handle the logic to hide the VisibilityIcon when leaving the row here
-                setHoveredId(null);
-                setHoveredRowDetails({});
-              },
-            },
-          }}
-          hideFooter
-        />
+        <div>
+          <Button
+            size="large"
+            variant="contained"
+            color="primary"
+            onClick={() => handleAddEmployeeClickOpen()}
+          >
+            Add User
+          </Button>
+        </div>
       </div>
+      {isLoading ? (
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          <LinearProgress style={{ width: "100%", marginTop: "20px" }} />
+        </div>
+      ) : isError ? (
+        <div
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
+        >
+          <h4>{error}</h4>
+        </div>
+      ) : isSuccess === true && data?.data?.employeesTableData?.length == 0 ? (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+        >
+          <h1>No Data Found</h1>
+        </div>
+      ) : isSuccess ? (
+        <div style={{ width: "95%", margin: "auto" }}>
+          <Grid container>
+            <Grid
+              item
+              xs={12}
+              style={{
+                width: "100%",
+                overflowX: "auto",
+                display: "inline-grid",
+                marginTop: "10px",
+              }}
+            >
+              <div>
+                <DataGrid
+                  autoHeight
+                  rows={rows}
+                  rowHeight={62}
+                  columns={columns}
+                  checkboxSelection
+                  disableRowSelectionOnClick
+                  onRowSelectionModelChange={(newRowSelectionModel) => {
+                    //  console.log("newRowSelectionModel", newRowSelectionModel);
+                    const receivedData = data?.data?.employeesTableData;
+                    const res = receivedData.filter((item) =>
+                      newRowSelectionModel.includes(item._id)
+                    );
+                    // console.log("checkRes", res);
+                    setCheckedRowDetails(res);
+                  }}
+                  getRowId={(row) => row._id}
+                  onRowClick={(params) => {
+                    // console.log("Clicked Row Data:", params);
+                    setSingleRowDetails(params);
+                  }}
+                  componentsProps={{
+                    row: {
+                      onMouseEnter: (event) => {
+                        const id = event.currentTarget.dataset.id;
+                        const hoveredRow = data?.data?.employeesTableData?.find(
+                          (row) => row._id == id
+                        );
+
+                        //   console.log("hoveredRow", hoveredRow);
+
+                        // console.log(`Hovering over row with ID: ${id}`);
+
+                        setHoveredId(id);
+                        setHoveredRowDetails(hoveredRow);
+                      },
+                      onMouseLeave: (event) => {
+                        // Handle the logic to hide the VisibilityIcon when leaving the row here
+                        setHoveredId(null);
+                        setHoveredRowDetails({});
+                      },
+                    },
+                  }}
+                  hideFooter
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <Pagination
+                  count={data?.data?.pagination?.pageCount}
+                  page={Number(page)}
+                  onChange={handlePageChange}
+                  variant="outlined"
+                  color="primary"
+                />
+              </div>
+            </Grid>
+          </Grid>
+        </div>
+      ) : (
+        ""
+      )}
+      {/* add employee dialog */}
+      <AddEmployeeDataGrid
+        addEmployeeOpen={addEmployeeOpen}
+        setAddEmployeeOpen={setAddEmployeeOpen}
+        setPage={setPage}
+      />
+
+      {/* edit employee dialog */}
+      <EditEmployeeDataGrid
+        editEmployeeopen={editEmployeeopen}
+        setEditEmployeeOpen={setEditEmployeeOpen}
+        tableRowId={tableRowId}
+      />
+
+      {/* delete employee dialog */}
+
+      {data?.data?.employeesTableData?.length !== "undefined" && (
+        <DeleteEmployeeDataGrid
+          deleteEmployeeOpen={deleteEmployeeOpen}
+          setDeleteEmployeeOpen={setDeleteEmployeeOpen}
+          tableRowId={tableRowId}
+          page={
+            page == 1
+              ? 1
+              : data?.data?.employeesTableData?.length > 1
+              ? page
+              : page - 1
+          }
+          setPage={setPage}
+        />
+      )}
     </>
   );
 };

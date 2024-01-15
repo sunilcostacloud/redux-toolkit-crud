@@ -265,7 +265,7 @@ const CrudOperations = () => {
             Search
           </Button>
         </div>
-        {console.log("gennder", gender)}
+        {/* {console.log("gennder", gender)} */}
         <div>
           <FormControl component="fieldset">
             <FormLabel component="legend">Gender</FormLabel>
