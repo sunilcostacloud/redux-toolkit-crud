@@ -51,7 +51,8 @@ const DataGridTable = () => {
 
   const [singleRowDetails, setSingleRowDetails] = useState({});
 
-  console.log("check info", checkedRowsDetails, singleRowDetails);
+  // console.log("singleRowDetails", singleRowDetails);
+  console.log("checkedRowsDetails", checkedRowsDetails);
 
   const [search, setSearch] = useState(
     sessionStorage.getItem("datagrid_search") || ""
