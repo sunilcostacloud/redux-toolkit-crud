@@ -9,6 +9,8 @@ import { DataGrid } from "@mui/x-data-grid";
 const Test = () => {
   const [hoverdRowId, setHoveredId] = useState(null);
   const [hoveredRowDetails, setHoveredRowDetails] = useState({});
+
+  // console.log("hoverdRowId", hoverdRowId, hoveredRowDetails);
   const handleViewClick = (e, id) => {
     console.log("checkRowId", id);
   };
@@ -160,7 +162,9 @@ const Test = () => {
 
   const [singleRowDetails, setSingleRowDetails] = useState({});
 
-  console.log("check info", checkedRowsDetails, singleRowDetails);
+  // console.log("singleRowDetails", singleRowDetails);
+
+  // console.log("checkedRowsDetails", checkedRowsDetails);
 
   return (
     <div>
@@ -172,9 +176,13 @@ const Test = () => {
         checkboxSelection
         disableRowSelectionOnClick
         onRowSelectionModelChange={(newRowSelectionModel) => {
-          setCheckedRowDetails(
-            newRowSelectionModel.map((index) => data[index])
+          //  console.log("newRowSelectionModel", newRowSelectionModel);
+          const receivedData = data;
+          const res = receivedData.filter((item) =>
+            newRowSelectionModel.includes(item.id)
           );
+          // console.log("checkRes", res);
+          setCheckedRowDetails(res);
         }}
         getRowId={(row) => row.id}
         onRowClick={(params) => {
@@ -185,7 +193,7 @@ const Test = () => {
           row: {
             onMouseEnter: (event) => {
               const id = event.currentTarget.dataset.id;
-              const hoveredRow = data.find((row) => row.id === Number(id));
+              const hoveredRow = data.find((row) => row.id == id);
 
               // console.log(`Hovering over row with ID: ${id}`)
               setHoveredId(id);

@@ -22,7 +22,8 @@ const Index = () => {
     <div>
       <button onClick={() => router.push("/")}>Home</button>
       <h1>Data Grid</h1>
-      <DataGridTable />
+      {/* <DataGridTable /> */}
+      <Test />
     </div>
   );
 };

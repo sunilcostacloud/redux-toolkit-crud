@@ -52,7 +52,7 @@ const DataGridTable = () => {
   const [singleRowDetails, setSingleRowDetails] = useState({});
 
   // console.log("singleRowDetails", singleRowDetails);
-  console.log("checkedRowsDetails", checkedRowsDetails);
+  // console.log("checkedRowsDetails", checkedRowsDetails);
 
   const [search, setSearch] = useState(
     sessionStorage.getItem("datagrid_search") || ""
@@ -356,11 +356,13 @@ const DataGridTable = () => {
           checkboxSelection
           disableRowSelectionOnClick
           onRowSelectionModelChange={(newRowSelectionModel) => {
-            setCheckedRowDetails(
-              newRowSelectionModel.map(
-                (index) => data?.data?.employeesTableData[index]
-              )
+            //  console.log("newRowSelectionModel", newRowSelectionModel);
+            const receivedData = data?.data?.employeesTableData;
+            const res = receivedData.filter((item) =>
+              newRowSelectionModel.includes(item._id)
             );
+            // console.log("checkRes", res);
+            setCheckedRowDetails(res);
           }}
           getRowId={(row) => row._id}
           onRowClick={(params) => {
