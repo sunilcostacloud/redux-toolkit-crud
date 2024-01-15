@@ -53,17 +53,23 @@ const DataGridTable = () => {
 
   console.log("check info", checkedRowsDetails, singleRowDetails);
 
-  const [search, setSearch] = useState(sessionStorage.getItem("search") || "");
+  const [search, setSearch] = useState(
+    sessionStorage.getItem("datagrid_search") || ""
+  );
   const [gender, setGender] = useState(
-    sessionStorage.getItem("gender") || "all"
+    sessionStorage.getItem("datagrid_gender") || "all"
   );
   const [status, setStatus] = useState(
-    sessionStorage.getItem("status") || "all"
+    sessionStorage.getItem("datagrid_status") || "all"
   );
-  const [sort, setSort] = useState(sessionStorage.getItem("sort") || "new");
+  const [sort, setSort] = useState(
+    sessionStorage.getItem("datagrid_sort") || "new"
+  );
 
   const [page, setPage] = useState(
-    sessionStorage.getItem("page") ? Number(sessionStorage.getItem("page")) : 1
+    sessionStorage.getItem("datagrid_page")
+      ? Number(sessionStorage.getItem("datagrid_page"))
+      : 1
   );
 
   const [addEmployeeOpen, setAddEmployeeOpen] = useState(false);
@@ -77,7 +83,7 @@ const DataGridTable = () => {
 
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
-    sessionStorage.setItem("page", newPage);
+    sessionStorage.setItem("datagrid_page", newPage);
     getData({ search, gender, status, sort, page: newPage });
   };
 
@@ -113,9 +119,9 @@ const DataGridTable = () => {
 
   const handleSearch = (searchedVal) => {
     setSearch(searchedVal);
-    sessionStorage.setItem("search", searchedVal);
+    sessionStorage.setItem("datagrid_search", searchedVal);
     setPage(1);
-    sessionStorage.setItem("page", 1);
+    sessionStorage.setItem("datagrid_page", 1);
     if (searchedVal == "") {
       getData({ search: searchedVal, gender, status, sort, page: 1 });
     }
@@ -123,53 +129,53 @@ const DataGridTable = () => {
 
   const requestSearch = () => {
     setPage(1);
-    sessionStorage.setItem("page", 1);
+    sessionStorage.setItem("datagrid_page", 1);
     getData({ search, gender, status, sort, page: 1 });
   };
 
   const handleGenderChange = (event) => {
-    sessionStorage.setItem("gender", event.target.value);
+    sessionStorage.setItem("datagrid_gender", event.target.value);
     setGender(event.target.value);
-    sessionStorage.setItem("page", 1);
+    sessionStorage.setItem("datagrid_page", 1);
     setPage(1);
     getData({ search, gender: event.target.value, status, sort, page: 1 });
   };
 
   const handleStatusChange = (event) => {
-    sessionStorage.setItem("status", event.target.value);
+    sessionStorage.setItem("datagrid_status", event.target.value);
     setStatus(event.target.value);
-    sessionStorage.setItem("page", 1);
+    sessionStorage.setItem("datagrid_page", 1);
     setPage(1);
     getData({ search, gender, status: event.target.value, sort, page: 1 });
   };
 
   const handleSortChange = (event) => {
-    sessionStorage.setItem("sort", event.target.value);
+    sessionStorage.setItem("datagrid_sort", event.target.value);
     setSort(event.target.value);
-    sessionStorage.setItem("page", 1);
+    sessionStorage.setItem("datagrid_page", 1);
     setPage(1);
     getData({ search, gender, status, sort: event.target.value, page: 1 });
   };
 
   useEffect(() => {
-    if (!sessionStorage.getItem("page")) {
-      sessionStorage.setItem("page", 1);
+    if (!sessionStorage.getItem("datagrid_page")) {
+      sessionStorage.setItem("datagrid_page", 1);
     }
 
-    if (!sessionStorage.getItem("gender")) {
-      sessionStorage.setItem("gender", "all");
+    if (!sessionStorage.getItem("datagrid_gender")) {
+      sessionStorage.setItem("datagrid_gender", "all");
     }
 
-    if (!sessionStorage.getItem("status")) {
-      sessionStorage.setItem("status", "all");
+    if (!sessionStorage.getItem("datagrid_status")) {
+      sessionStorage.setItem("datagrid_status", "all");
     }
 
-    if (!sessionStorage.getItem("sort")) {
-      sessionStorage.setItem("sort", "new");
+    if (!sessionStorage.getItem("datagrid_sort")) {
+      sessionStorage.setItem("datagrid_sort", "new");
     }
 
-    if (!sessionStorage.getItem("search")) {
-      sessionStorage.setItem("search", "");
+    if (!sessionStorage.getItem("datagrid_search")) {
+      sessionStorage.setItem("datagrid_search", "");
     }
 
     getData({

@@ -12,7 +12,7 @@ import { useEffect } from "react";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
-
+  console.log("checkRouter", router.pathname.split("/")[1]);
   useEffect(() => {
     if (router.pathname.split("/")[1] != "crud-operations") {
       sessionStorage.removeItem("search");
@@ -20,12 +20,13 @@ export default function App({ Component, pageProps }) {
       sessionStorage.removeItem("status");
       sessionStorage.removeItem("gender");
       sessionStorage.removeItem("page");
-    } else if (router.pathname.split("/")[1] != "data-grid") {
-      sessionStorage.removeItem("search");
-      sessionStorage.removeItem("sort");
-      sessionStorage.removeItem("status");
-      sessionStorage.removeItem("gender");
-      sessionStorage.removeItem("page");
+    }
+    if (router.pathname.split("/")[1] != "data-grid") {
+      sessionStorage.removeItem("datagrid_search");
+      sessionStorage.removeItem("datagrid_sort");
+      sessionStorage.removeItem("datagrid_status");
+      sessionStorage.removeItem("datagrid_gender");
+      sessionStorage.removeItem("datagrid_page");
     }
   }, [router.pathname]);
 
