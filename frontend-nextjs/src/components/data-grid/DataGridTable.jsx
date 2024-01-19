@@ -503,7 +503,7 @@ const DataGridTable = () => {
                     // console.log("Clicked Row Data:", params);
                     setSingleRowDetails(params);
                   }}
-                  componentsProps={{
+                  slotProps={{
                     row: {
                       onMouseEnter: (event) => {
                         const id = event.currentTarget.dataset.id;
