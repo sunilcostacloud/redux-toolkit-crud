@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
+import AccountTable from "@/components/data-grid/DataGridWithSearchAndPaginationFrontend";
 
 const DataGridTable = dynamic(
   () => import("../../components/data-grid/DataGridTable"),
@@ -22,8 +23,9 @@ const Index = () => {
     <div>
       <button onClick={() => router.push("/")}>Home</button>
       <h1>Data Grid</h1>
-      <DataGridTable />
+      {/* <DataGridTable /> */}
       {/* <Test /> */}
+      <AccountTable />
     </div>
   );
 };
