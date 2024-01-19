@@ -45,8 +45,6 @@ const DataGridTable = () => {
 
   // console.log("data?.data?.employeesTableData", data);
 
-  const rows = data?.data?.employeesTableData || [];
-
   const [checkedRowsDetails, setCheckedRowDetails] = useState([]);
 
   const [singleRowDetails, setSingleRowDetails] = useState({});
@@ -486,7 +484,7 @@ const DataGridTable = () => {
               <div>
                 <DataGrid
                   autoHeight
-                  rows={rows}
+                  rows={data?.data?.employeesTableData || []}
                   rowHeight={62}
                   columns={columns}
                   checkboxSelection
