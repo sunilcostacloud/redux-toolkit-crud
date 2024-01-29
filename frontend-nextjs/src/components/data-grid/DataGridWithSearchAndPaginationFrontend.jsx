@@ -1,29 +1,20 @@
 // ** React Import
-import { useState } from "react";
-import { Collapse, Fab, Icon, InputBase, Tooltip } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { Tooltip } from "@mui/material";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import CardHeader from "@mui/material/CardHeader";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import IconButton from "@mui/material/IconButton";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import QuickSearchToolbar from "./QuickSearchToolbar";
 
-// ** renders client column
-const renderClient = (params) => {
-  const { row } = params;
-};
-
 const rows = [
   {
     id: 1,
-
     Contact_name: "Korrie O'Crevy",
     account_name: "Nuclear Power Engineer",
     email: "mailto:kocrevy0@thetimes.co.uk",
@@ -33,7 +24,6 @@ const rows = [
   },
   {
     id: 7,
-
     Contact_name: "Eileen Diehn",
     account_name: "Environmental Specialist",
     email: "mailto:ediehn6@163.com",
@@ -73,7 +63,6 @@ const rows = [
   },
   {
     id: 6,
-
     Contact_name: "Genevra Honeywood",
     account_name: "Geologist",
     email: "mailto:ghoneywood5@narod.ru",
@@ -83,7 +72,6 @@ const rows = [
   },
   {
     id: 4,
-
     Contact_name: "Dorolice Crossman",
     account_name: "Cost Accountant",
     email: "mailto:dcrossman3@google.co.jp",
@@ -155,23 +143,14 @@ const rows = [
 ];
 
 const AccountTable = () => {
-  const escapeRegExp = (string) => {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
-  };
-
   // ** State
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 7,
   });
-  const [open, setOpen] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [collapsed, setCollapsed] = useState(true);
+
   const [searchText, setSearchText] = useState("");
-  const [data] = useState(rows);
   const [filteredData, setFilteredData] = useState([]);
-  const [showIcon, setShowIcon] = useState(false);
-  const dispatch = useDispatch();
 
   const [checkedRowsDetails, setCheckedRowDetails] = useState([]);
 
@@ -205,7 +184,6 @@ const AccountTable = () => {
 
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            {renderClient(params)}
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Typography
                 noWrap
@@ -310,85 +288,56 @@ const AccountTable = () => {
     },
   ];
 
-  const handleSubmit = () => {
-    setOpen(!open);
-  };
-
-  const handleVisibilityIconClick = () => {
-    setOpenDialog(true);
-  };
-
-  const handleContactFormClose = () => {
-    setOpen(false);
-    setOpenDialog(false);
-  };
-
-  const handleContactFormSubmit = () => {
-    handleContactFormClose();
-  };
-
-  const handleDialogSubmit = (params) => {
-    handleVisibilityIconClick();
+  const filtering = (searchedVal) => {
+    const filtered = rows.filter(
+      (user) =>
+        user.Contact_name.toString()
+          .toLowerCase()
+          .includes(searchedVal.toLowerCase()) ||
+        user.account_name
+          .toString()
+          .toLowerCase()
+          .includes(searchedVal.toLowerCase()) ||
+        user.email
+          .toString()
+          .toLowerCase()
+          .includes(searchedVal.toLowerCase()) ||
+        user.Phone.toString()
+          .toLowerCase()
+          .includes(searchedVal.toLowerCase()) ||
+        user.Designation.toString()
+          .toLowerCase()
+          .includes(searchedVal.toLowerCase()) ||
+        user.contact_owner
+          .toString()
+          .toLowerCase()
+          .includes(searchedVal.toLowerCase())
+    );
+    setFilteredData(filtered);
   };
 
   const handleSearch = (searchValue) => {
     setSearchText(searchValue);
-    const searchRegex = new RegExp(escapeRegExp(searchValue), "i");
-
-    const filteredRows = data.filter((row) => {
-      return Object.keys(row).some((field) => {
-        // @ts-ignore
-        return searchRegex.test(row[field].toString());
-      });
-    });
-    if (searchValue.length) {
-      setFilteredData(filteredRows);
-    } else {
-      setFilteredData([]);
-    }
+    filtering(searchValue);
   };
+
+  useEffect(() => {
+    setFilteredData(rows);
+  }, []);
 
   return (
     <Card className="tableGrid">
-      <CardHeader
-        title="ACCOUNTS"
-        action={
-          <>
-            <div className="PaIconCon">
-              <IconButton>
-                <Tooltip title="CREATE LEAD" placement="top">
-                  <span>
-                    <Fab
-                      style={{
-                        width: "2.2rem",
-                        height: ".1rem",
-                        backgroundColor: "#7367F0",
-                      }}
-                      onClick={handleSubmit}
-                    >
-                      <AddIcon style={{ fontSize: "19", color: "#fff" }} />
-                    </Fab>
-                  </span>
-                </Tooltip>
-              </IconButton>
-            </div>
-          </>
-        }
-      />
       <DataGrid
         sx={{ display: "flex" }}
         autoHeight
         slots={{ toolbar: QuickSearchToolbar }}
-        rows={filteredData.length ? filteredData || [] : data || []}
+        rows={filteredData || []}
         columns={columns}
         checkboxSelection
         disableRowSelectionOnClick
         onRowSelectionModelChange={(newRowSelectionModel) => {
-          //  console.log("newRowSelectionModel", newRowSelectionModel);
-          const receivedData = filteredData.length
-            ? filteredData || []
-            : data || [];
-          const res = receivedData.filter((item) =>
+          // console.log("newRowSelectionModel", newRowSelectionModel);
+          const res = filteredData?.filter((item) =>
             newRowSelectionModel.includes(item.id)
           );
           // console.log("checkRes", res);
@@ -396,7 +345,7 @@ const AccountTable = () => {
         }}
         getRowId={(row) => row.id}
         onRowClick={(params) => {
-          console.log("Clicked Row Data:", params);
+          // console.log("Clicked Row Data:", params);
           setSingleRowDetails(params);
         }}
         pageSizeOptions={[7, 10, 25, 50]}
@@ -415,9 +364,7 @@ const AccountTable = () => {
           row: {
             onMouseEnter: (event) => {
               const id = event.currentTarget.dataset.id;
-              const hoveredRow = (
-                filteredData.length ? filteredData || [] : data || []
-              ).find((row) => row.id == id);
+              const hoveredRow = filteredData?.find((row) => row.id == id);
 
               setHoveredId(id);
               setHoveredRowDetails(hoveredRow);

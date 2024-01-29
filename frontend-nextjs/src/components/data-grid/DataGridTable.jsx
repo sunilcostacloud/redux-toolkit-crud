@@ -491,11 +491,10 @@ const DataGridTable = () => {
                   disableRowSelectionOnClick
                   onRowSelectionModelChange={(newRowSelectionModel) => {
                     //  console.log("newRowSelectionModel", newRowSelectionModel);
-                    const receivedData = data?.data?.employeesTableData;
-                    const res = receivedData.filter((item) =>
+                    const res = data?.data?.employeesTableData?.filter((item) =>
                       newRowSelectionModel.includes(item._id)
                     );
-                    // console.log("checkRes", res);
+                    //  console.log("checkRes", res);
                     setCheckedRowDetails(res);
                   }}
                   getRowId={(row) => row._id}
